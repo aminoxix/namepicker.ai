@@ -1,5 +1,5 @@
 import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
-import { favGeneratorRouter } from "./routers/fav-generator";
+import { generatorRouter } from "./routers/generator";
 import { userRouter } from "./routers/user";
 
 /**
@@ -9,7 +9,7 @@ import { userRouter } from "./routers/user";
  */
 export const appRouter = createTRPCRouter({
   user: userRouter,
-  favGenerator: favGeneratorRouter,
+  generator: generatorRouter,
 });
 
 // export type definition of API

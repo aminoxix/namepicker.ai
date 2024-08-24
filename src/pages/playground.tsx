@@ -1,15 +1,26 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
+import ComboForm, {
+  type FormValues as ComboFormValues,
+} from "@/components/forms/combo";
 import FavForm, {
   type FormValues as FavFormValues,
 } from "@/components/forms/fav";
+import UsernameForm, {
+  type FormValues as UsernameFormValues,
+} from "@/components/forms/username";
 import { useForm } from "react-hook-form";
 
 import { api } from "@/utils/api";
 import { Card, Drawer, Segmented } from "antd";
 
-import { CrownTwoTone, FireTwoTone, SkinTwoTone } from "@ant-design/icons";
+import {
+  CrownTwoTone,
+  FireTwoTone,
+  PauseCircleTwoTone,
+  SkinTwoTone,
+} from "@ant-design/icons";
 import { SignedIn, useAuth, UserButton } from "@clerk/nextjs";
 
 export type SegmentedValue = "BEST_FOR_YOU" | "PICK_USERNAME" | "BABY_NAMING";
@@ -28,21 +39,88 @@ const Playground = () => {
   const [data, setData] = useState<string>("");
   const [selected, setSelected] = useState<SegmentedValue>("BEST_FOR_YOU");
 
-  const { register, handleSubmit, watch, setValue } = useForm<FavFormValues>();
+  const {
+    watch: favWatch,
+    register: favRegister,
+    setValue: favSetValue,
+    handleSubmit: favHandleSubmit,
+    formState: { errors: favErrors, isValid: favIsValid },
+  } = useForm<FavFormValues>({
+    mode: "onChange",
+    defaultValues: {
+      aim: "",
+      name: "",
+      hobby: "",
+      worded: 1,
+      animal: "",
+      background: "",
+    },
+  });
+
+  const {
+    watch: comboWatch,
+    register: comboRegister,
+    setValue: comboSetValue,
+    handleSubmit: comboHandleSubmit,
+    formState: { errors: comboErrors, isValid: comboIsValid },
+  } = useForm<ComboFormValues>({
+    mode: "onChange",
+    defaultValues: {
+      partner1: "",
+      partner2: "",
+      gender: "GIRL",
+    },
+  });
+
+  const {
+    watch: usernameWatch,
+    register: usernameRegister,
+    setValue: usernameSetValue,
+    handleSubmit: usernameHandleSubmit,
+    formState: { errors: usernameErrors, isValid: usernameIsValid },
+  } = useForm<UsernameFormValues>({
+    mode: "onChange",
+    defaultValues: {
+      name: "",
+      worded: 1,
+    },
+  });
 
   const { mutate: generateFavName, isPending: isFavPending } =
-    api.favGenerator.generateFavName.useMutation({
+    api.generator.generateFavName.useMutation({
       onSuccess: (successor: { message: string; response: string }) => {
         setData(successor.response);
         setOpen(true);
       },
       onError: (error) => {
-        console.error("Fav name generation failed", error);
+        console.error("Favorite name generation failed", error);
+      },
+    });
+
+  const { mutate: generateComboName, isPending: isComboPending } =
+    api.generator.generateComboName.useMutation({
+      onSuccess: (successor: { message: string; response: string }) => {
+        setData(successor.response);
+        setOpen(true);
+      },
+      onError: (error) => {
+        console.error("Combos name generation failed", error);
+      },
+    });
+
+  const { mutate: generateUsername, isPending: isUsernamePending } =
+    api.generator.generateUsername.useMutation({
+      onSuccess: (successor: { message: string; response: string }) => {
+        setData(successor.response);
+        setOpen(true);
+      },
+      onError: (error) => {
+        console.error("Combos name generation failed", error);
       },
     });
 
   return (
-    <div className="h-screen min-w-full bg-primary">
+    <div className="h-screen min-w-full bg-primary px-5 py-8">
       <div className="mx-auto flex h-full max-w-3xl flex-col justify-center gap-4 text-white">
         <div className="flex items-center justify-between">
           <h1 className="text-3xl">Playground</h1>
@@ -94,33 +172,77 @@ const Playground = () => {
         ) : (
           <Card>
             <Drawer
+              open={open}
+              title="Generated content"
               onKeyDown={(e) => {
                 if (e.key === "Escape") {
                   setOpen(false);
                 }
               }}
-              title="Generated content"
               onClose={() => setOpen(false)}
-              open={open}
             >
-              <p>{data.toString()}</p>
+              {data ? (
+                <ul>
+                  {selected === "BEST_FOR_YOU"
+                    ? data
+                        .toString()
+                        .split("-")
+                        .map((item) => <li key={item}>{item}</li>)
+                    : selected === "PICK_USERNAME"
+                      ? data
+                          .toString()
+                          .split("-")
+                          .map((item) => <li key={item}>{item}</li>)
+                      : selected === "BABY_NAMING"
+                        ? data
+                            .toString()
+                            .split("-")
+                            .map((item) => <li key={item}>{item}</li>)
+                        : null}
+                </ul>
+              ) : (
+                <div className="text-center">
+                  <PauseCircleTwoTone />
+                  <p>No data generated yet.</p>
+                </div>
+              )}
             </Drawer>
             {selected === "BEST_FOR_YOU" ? (
               <FavForm
-                watch={watch}
-                setValue={setValue}
-                register={register}
-                handleSubmit={handleSubmit}
+                watch={favWatch}
+                errors={favErrors}
+                isValid={favIsValid}
+                setValue={favSetValue}
+                register={favRegister}
+                handleSubmit={favHandleSubmit}
                 isFavPending={isFavPending}
                 generateFavName={generateFavName}
               />
             ) : selected === "PICK_USERNAME" ? (
               <span>
-                Coming soon! <span className="text-2xl">👑</span>
+                <UsernameForm
+                  watch={usernameWatch}
+                  errors={usernameErrors}
+                  isValid={usernameIsValid}
+                  setValue={usernameSetValue}
+                  register={usernameRegister}
+                  handleSubmit={usernameHandleSubmit}
+                  isUsernamePending={isUsernamePending}
+                  generateUsername={generateUsername}
+                />
               </span>
             ) : selected === "BABY_NAMING" ? (
               <span>
-                Coming soon! <span className="text-2xl">👶</span>
+                <ComboForm
+                  watch={comboWatch}
+                  errors={comboErrors}
+                  isValid={comboIsValid}
+                  setValue={comboSetValue}
+                  register={comboRegister}
+                  handleSubmit={comboHandleSubmit}
+                  isComboPending={isComboPending}
+                  generateComboName={generateComboName}
+                />
               </span>
             ) : null}
           </Card>

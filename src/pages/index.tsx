@@ -6,6 +6,8 @@ import { api } from "@/utils/api";
 
 import { SignedOut, SignInButton, useAuth } from "@clerk/nextjs";
 
+import { Loading3QuartersOutlined } from "@ant-design/icons";
+
 export default function Home() {
   const user = useAuth();
   const router = useRouter();
@@ -32,7 +34,7 @@ export default function Home() {
         <meta name="description" content="created by aminoxix" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="mx-auto flex min-h-screen w-1/2 flex-col items-center justify-center gap-6 bg-primary p-10 text-secondary">
+      <main className="mx-auto flex min-h-screen w-auto flex-col items-center justify-center gap-6 bg-primary px-5 py-8 text-secondary md:w-1/2">
         <h1 className="text-3xl">namepicker.ai</h1>
         <p className="text-justify">
           a web application that leverages Google&apos;s generative AI to help
@@ -43,6 +45,9 @@ export default function Home() {
           versions of full names for usernames.
         </p>
 
+        {(user.isSignedIn ?? !user.isLoaded) && (
+          <Loading3QuartersOutlined className="animate-spin" />
+        )}
         <SignedOut>
           <div className="rounded border border-secondary p-2">
             <SignInButton />
