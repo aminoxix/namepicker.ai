@@ -1,6 +1,7 @@
 import { useAuth } from "@clerk/nextjs";
 import { Button, Input, Slider, Typography } from "antd";
 import type {
+  FieldErrors,
   UseFormHandleSubmit,
   UseFormRegister,
   UseFormSetValue,
@@ -16,19 +17,14 @@ export type FormValues = {
   worded: number;
 };
 
-export default function FavForm({
-  watch,
-  setValue,
-  register,
-  handleSubmit,
-  isFavPending,
-  generateFavName,
-}: {
+export type FavFormType = {
   handleSubmit: UseFormHandleSubmit<FormValues>;
   setValue: UseFormSetValue<FormValues>;
   register: UseFormRegister<FormValues>;
+  errors: FieldErrors<FormValues>;
   watch: UseFormWatch<FormValues>;
   isFavPending: boolean;
+  isValid: boolean;
   generateFavName: (data: {
     aim: string;
     name: string;
@@ -37,11 +33,23 @@ export default function FavForm({
     background: string;
     worded: "ONE" | "TWO";
     userId: string;
+
     isFav: boolean;
     isCombo: boolean;
     isUsername: boolean;
   }) => void;
-}) {
+};
+
+export default function FavForm({
+  watch,
+  errors,
+  isValid,
+  setValue,
+  register,
+  handleSubmit,
+  isFavPending,
+  generateFavName,
+}: FavFormType) {
   const user = useAuth();
 
   return (
@@ -53,6 +61,7 @@ export default function FavForm({
           placeholder="Let's start with your first name"
           {...register("name", { required: true, maxLength: 80 })}
           onChange={(e) => setValue("name", e.target.value)}
+          status={errors.name && "error"}
         />
       </div>
       <div>
@@ -62,6 +71,7 @@ export default function FavForm({
           placeholder="What's your favorite animal?"
           {...register("animal", { required: true, maxLength: 100 })}
           onChange={(e) => setValue("animal", e.target.value)}
+          status={errors.animal && "error"}
         />
       </div>
       <div>
@@ -71,6 +81,7 @@ export default function FavForm({
           placeholder="Experience in a few words"
           {...register("background", { required: true, maxLength: 100 })}
           onChange={(e) => setValue("background", e.target.value)}
+          status={errors.background && "error"}
         />
       </div>
       <div>
@@ -80,6 +91,7 @@ export default function FavForm({
           placeholder="What's you do for fun?"
           {...register("hobby", { required: true, maxLength: 100 })}
           onChange={(e) => setValue("hobby", e.target.value)}
+          status={errors.hobby && "error"}
         />
       </div>
       <div>
@@ -89,6 +101,7 @@ export default function FavForm({
           placeholder="What's your goal?"
           {...register("aim", { required: true, maxLength: 100 })}
           onChange={(e) => setValue("aim", e.target.value)}
+          status={errors.aim && "error"}
         />
       </div>
       <div>
@@ -103,17 +116,21 @@ export default function FavForm({
       </div>
 
       <Button
+        type="primary"
+        loading={isFavPending}
         disabled={isFavPending}
         onClick={handleSubmit((data) => {
-          console.log(data);
-          return generateFavName({
-            ...data,
-            worded: data.worded === 2 ? "TWO" : "ONE",
-            userId: user.userId!,
-            isFav: true,
-            isCombo: false,
-            isUsername: false,
-          });
+          return (
+            isValid &&
+            generateFavName({
+              ...data,
+              worded: data.worded === 2 ? "TWO" : "ONE",
+              userId: user.userId!,
+              isFav: true,
+              isCombo: false,
+              isUsername: false,
+            })
+          );
         })}
       >
         Submit
