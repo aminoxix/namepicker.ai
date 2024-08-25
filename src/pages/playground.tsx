@@ -14,6 +14,7 @@ import { useForm } from "react-hook-form";
 
 import { api } from "@/utils/api";
 import { Card, Drawer, Segmented } from "antd";
+import Markdown from "marked-react";
 
 import {
   CrownTwoTone,
@@ -182,24 +183,10 @@ const Playground = () => {
               onClose={() => setOpen(false)}
             >
               {data ? (
-                <ul>
-                  {selected === "BEST_FOR_YOU"
-                    ? data
-                        .toString()
-                        .split("-")
-                        .map((item) => <li key={item}>{item}</li>)
-                    : selected === "PICK_USERNAME"
-                      ? data
-                          .toString()
-                          .split("-")
-                          .map((item) => <li key={item}>{item}</li>)
-                      : selected === "BABY_NAMING"
-                        ? data
-                            .toString()
-                            .split("-")
-                            .map((item) => <li key={item}>{item}</li>)
-                        : null}
-                </ul>
+                data
+                  .split("\n")
+                  .filter((line) => line)
+                  .map((line, index) => <Markdown key={index}>{line}</Markdown>)
               ) : (
                 <div className="text-center">
                   <PauseCircleTwoTone />

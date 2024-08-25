@@ -41,6 +41,9 @@ importers:
       geist:
         specifier: ^1.3.0
         version: 1.3.1(next@14.2.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
+      marked-react:
+        specifier: ^2.0.0
+        version: 2.0.0(react@18.3.1)
       next:
         specifier: ^14.2.4
         version: 14.2.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -1390,6 +1393,16 @@ packages:
   map-obj@4.3.0:
     resolution: {integrity: sha512-hdN1wVrZbb29eBGiGjJbeP8JbKjq1urkHJ/LIP/NY48MZ1QVXUsQBV1G1zvYFHn1XE06cwjBsOI2K3Ulnj1YXQ==}
     engines: {node: '>=8'}
+
+  marked-react@2.0.0:
+    resolution: {integrity: sha512-Mp5HqfONf/RDqFtA+6xw2EjKkSbA8/xNPwyJ8ewLy/q3v21lRsPA7h+HUndVAW/yEIoebvcyzzSDpbjzL/xjZg==}
+    peerDependencies:
+      react: ^16.8.0 || >=17.0.0
+
+  marked@6.0.0:
+    resolution: {integrity: sha512-7E3m/xIlymrFL5gWswIT4CheIE3fDeh51NV09M4x8iOc7NDYlyERcQMLAIHcSlrvwliwbPQ4OGD+MpPSYiQcqw==}
+    engines: {node: '>= 16'}
+    hasBin: true
 
   merge2@1.4.1:
     resolution: {integrity: sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==}
@@ -3876,6 +3889,13 @@ snapshots:
   lru-cache@10.4.3: {}
 
   map-obj@4.3.0: {}
+
+  marked-react@2.0.0(react@18.3.1):
+    dependencies:
+      marked: 6.0.0
+      react: 18.3.1
+
+  marked@6.0.0: {}
 
   merge2@1.4.1: {}
 
