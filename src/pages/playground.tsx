@@ -1,5 +1,4 @@
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import ComboForm, {
   type FormValues as ComboFormValues,
@@ -27,15 +26,6 @@ import { SignedIn, useAuth, UserButton } from "@clerk/nextjs";
 export type SegmentedValue = "BEST_FOR_YOU" | "PICK_USERNAME" | "BABY_NAMING";
 
 const Playground = () => {
-  const user = useAuth();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!user?.userId) {
-      void router.push("/");
-    }
-  }, [router, user?.userId]);
-
   const [open, setOpen] = useState(false);
   const [data, setData] = useState<string>("");
   const [selected, setSelected] = useState<SegmentedValue>("BEST_FOR_YOU");

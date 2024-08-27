@@ -1,8 +1,4 @@
 import Head from "next/head";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
-
-import { api } from "@/utils/api";
 
 import { SignedOut, SignInButton, useAuth } from "@clerk/nextjs";
 
@@ -10,22 +6,6 @@ import { Loading3QuartersOutlined } from "@ant-design/icons";
 
 export default function Home() {
   const user = useAuth();
-  const router = useRouter();
-
-  const { mutate: createUser } = api.user.create.useMutation({
-    onSuccess: (response) => {
-      void router.push("/playground");
-      console.log("User created", response);
-    },
-  });
-
-  useEffect(() => {
-    if (user?.userId) {
-      createUser({
-        id: user.userId,
-      });
-    }
-  }, [createUser, user?.userId]);
 
   return (
     <>
@@ -45,7 +25,7 @@ export default function Home() {
           versions of full names for usernames.
         </p>
 
-        {(user.isSignedIn ?? !user.isLoaded) && (
+        {user.isLoaded || (
           <Loading3QuartersOutlined className="animate-spin" />
         )}
         <SignedOut>
