@@ -7,7 +7,12 @@
     "build": "next build",
     "dev": "next dev",
     "lint": "next lint",
-    "start": "next start"
+    "start": "next start",
+    "pnpm run db:generate": "prisma generate",
+    "pnpm run db:push": "prisma db push",
+    "pnpm run db:studio": "prisma studio",
+    "pnpm run db:migrate": "prisma migrate dev",
+    "pnpm run db:reset": "prisma migrate reset"
   },
   "dependencies": {
     "@ant-design/icons": "^5.4.0",
