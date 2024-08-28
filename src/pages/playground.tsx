@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 import ComboForm, {
   type FormValues as ComboFormValues,
@@ -26,9 +27,18 @@ import { SignedIn, useAuth, UserButton } from "@clerk/nextjs";
 export type SegmentedValue = "BEST_FOR_YOU" | "PICK_USERNAME" | "BABY_NAMING";
 
 const Playground = () => {
+  const user = useAuth();
+  const router = useRouter();
+
   const [open, setOpen] = useState(false);
   const [data, setData] = useState<string>("");
   const [selected, setSelected] = useState<SegmentedValue>("BEST_FOR_YOU");
+
+  useEffect(() => {
+    if (!user.isSignedIn) {
+      void router.push("/");
+    }
+  }, [router, user.isSignedIn]);
 
   const {
     watch: favWatch,
@@ -158,7 +168,7 @@ const Playground = () => {
           ]}
         />
 
-        {isFavPending ? (
+        {isFavPending || isComboPending || isUsernamePending ? (
           <Card loading={true} style={{ minWidth: 300 }} />
         ) : (
           <Card>

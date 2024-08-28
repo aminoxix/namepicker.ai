@@ -1,4 +1,7 @@
 import Head from "next/head";
+import { useRouter } from "next/router";
+
+import { useEffect } from "react";
 
 import { SignedOut, SignInButton, useAuth } from "@clerk/nextjs";
 
@@ -6,6 +9,13 @@ import { Loading3QuartersOutlined } from "@ant-design/icons";
 
 export default function Home() {
   const user = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (user.isSignedIn) {
+      void router.push("playground");
+    }
+  }, [router, user]);
 
   return (
     <>
@@ -25,11 +35,9 @@ export default function Home() {
           versions of full names for usernames.
         </p>
 
-        {user.isLoaded || (
-          <Loading3QuartersOutlined className="animate-spin" />
-        )}
+        {user.isLoaded || <Loading3QuartersOutlined className="animate-spin" />}
         <SignedOut>
-          <div className="rounded border border-secondary p-2">
+          <div className="rounded border border-secondary p-2 hover:bg-secondary hover:text-primary">
             <SignInButton />
           </div>
         </SignedOut>
