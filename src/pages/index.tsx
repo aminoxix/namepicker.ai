@@ -1,8 +1,7 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 
-import { api } from "@/utils/api";
+import { useEffect } from "react";
 
 import { SignedOut, SignInButton, useAuth } from "@clerk/nextjs";
 
@@ -12,20 +11,11 @@ export default function Home() {
   const user = useAuth();
   const router = useRouter();
 
-  const { mutate: createUser } = api.user.create.useMutation({
-    onSuccess: (response) => {
-      void router.push("/playground");
-      console.log("User created", response);
-    },
-  });
-
   useEffect(() => {
-    if (user?.userId) {
-      createUser({
-        id: user.userId,
-      });
+    if (user.isSignedIn) {
+      void router.push("playground");
     }
-  }, [createUser, user?.userId]);
+  }, [router, user]);
 
   return (
     <>
@@ -45,11 +35,9 @@ export default function Home() {
           versions of full names for usernames.
         </p>
 
-        {(user.isSignedIn ?? !user.isLoaded) && (
-          <Loading3QuartersOutlined className="animate-spin" />
-        )}
+        {user.isLoaded || <Loading3QuartersOutlined className="animate-spin" />}
         <SignedOut>
-          <div className="rounded border border-secondary p-2">
+          <div className="rounded border border-secondary p-2 hover:bg-secondary hover:text-primary">
             <SignInButton />
           </div>
         </SignedOut>

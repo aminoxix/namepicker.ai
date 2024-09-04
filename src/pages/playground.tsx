@@ -30,15 +30,15 @@ const Playground = () => {
   const user = useAuth();
   const router = useRouter();
 
-  useEffect(() => {
-    if (!user?.userId) {
-      void router.push("/");
-    }
-  }, [router, user?.userId]);
-
   const [open, setOpen] = useState(false);
   const [data, setData] = useState<string>("");
   const [selected, setSelected] = useState<SegmentedValue>("BEST_FOR_YOU");
+
+  useEffect(() => {
+    if (!user.isSignedIn) {
+      void router.push("/");
+    }
+  }, [router, user.isSignedIn]);
 
   const {
     watch: favWatch,
@@ -168,7 +168,7 @@ const Playground = () => {
           ]}
         />
 
-        {isFavPending ? (
+        {isFavPending || isComboPending || isUsernamePending ? (
           <Card loading={true} style={{ minWidth: 300 }} />
         ) : (
           <Card>
