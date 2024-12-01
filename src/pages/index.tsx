@@ -15,7 +15,6 @@ export default function Home() {
   const { mutate: createUser } = api.user.create.useMutation({
     onSuccess: (response) => {
       void router.push("/playground");
-      console.log("User created", response);
     },
   });
 
