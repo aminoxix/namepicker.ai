@@ -3,6 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "pnpm": {
+    "overrides": {
+      "minimatch": ">=10.0.1",
+      "glob": ">=11.0.2",
+      "@babel/runtime": ">=7.27.1",
+      "picomatch": ">=4.0.2"
+    }
+  },
   "scripts": {
     "build": "next build",
     "dev": "next dev",
