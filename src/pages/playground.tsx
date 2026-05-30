@@ -22,7 +22,7 @@ import {
   PauseCircleTwoTone,
   SkinTwoTone,
 } from "@ant-design/icons";
-import { SignedIn, useAuth, UserButton } from "@clerk/nextjs";
+import { useAuth, UserButton } from "@clerk/nextjs";
 
 export type SegmentedValue = "BEST_FOR_YOU" | "PICK_USERNAME" | "BABY_NAMING";
 
@@ -125,12 +125,12 @@ const Playground = () => {
       <div className="mx-auto flex h-full max-w-3xl flex-col justify-center gap-4 text-white">
         <div className="flex items-center justify-between">
           <h1 className="text-3xl">Playground</h1>
-          <SignedIn>
+          {user.isSignedIn && (
             <div className="flex items-center">
               <span className="pr-2 text-sm">signed in as</span>
               <UserButton />
             </div>
-          </SignedIn>
+          )}
         </div>
         <Segmented
           block

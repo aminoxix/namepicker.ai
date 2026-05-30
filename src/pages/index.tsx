@@ -4,7 +4,7 @@ import { useEffect } from "react";
 
 import { api } from "@/utils/api";
 
-import { SignedOut, SignInButton, useAuth } from "@clerk/nextjs";
+import { SignInButton, useAuth } from "@clerk/nextjs";
 
 import { Loading3QuartersOutlined } from "@ant-design/icons";
 
@@ -47,11 +47,11 @@ export default function Home() {
         {(user.isSignedIn ?? !user.isLoaded) && (
           <Loading3QuartersOutlined className="animate-spin" />
         )}
-        <SignedOut>
+        {user.isLoaded && !user.isSignedIn && (
           <div className="rounded border border-secondary p-2">
             <SignInButton />
           </div>
-        </SignedOut>
+        )}
       </main>
     </>
   );

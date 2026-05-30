@@ -14,7 +14,8 @@ export const userRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input }) => {
-      const user = await clerkClient().users.getUser(input?.id);
+      const clerk = await clerkClient();
+      const user = await clerk.users.getUser(input.id);
 
       const response = await fetch(`${env.BACKEND_ENDPOINT_URL}/user/create`, {
         method: "POST",
