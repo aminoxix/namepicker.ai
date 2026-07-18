@@ -14,6 +14,9 @@ importers:
 
   .:
     dependencies:
+      '@aminoxix/schemind':
+        specifier: ^0.5.3
+        version: 0.5.3(@tanstack/react-query@5.52.1(react@18.3.1))(typescript@5.5.4)
       '@ant-design/icons':
         specifier: ^5.4.0
         version: 5.4.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -117,6 +120,19 @@ packages:
   '@alloc/quick-lru@5.2.0':
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
     engines: {node: '>=10'}
+
+  '@aminoxix/schemind@0.5.3':
+    resolution: {integrity: sha512-pQsZ8ZrW6xgANMYLT5W6Zx3X05oegVcnokeLFkIYJzr4wQ9K3pnDwMKBhOaGn27n/1MMQZHbQrGvnCqOLnTjGA==}
+    engines: {node: '>=18.0.0'}
+    hasBin: true
+    peerDependencies:
+      '@tanstack/react-query': '>=5.0.0'
+      typescript: '>=5.0.0'
+    peerDependenciesMeta:
+      '@tanstack/react-query':
+        optional: true
+      typescript:
+        optional: true
 
   '@ant-design/colors@7.1.0':
     resolution: {integrity: sha512-MMoDGWn1y9LdQJQSHiCC20x3uZ3CwQnv9QMz6pCmJOrqdgM9YxsoVVY0wtrdXbmfSgnV0KNk6zi09NAhMR2jvg==}
@@ -2581,6 +2597,11 @@ packages:
 snapshots:
 
   '@alloc/quick-lru@5.2.0': {}
+
+  '@aminoxix/schemind@0.5.3(@tanstack/react-query@5.52.1(react@18.3.1))(typescript@5.5.4)':
+    optionalDependencies:
+      '@tanstack/react-query': 5.52.1(react@18.3.1)
+      typescript: 5.5.4
 
   '@ant-design/colors@7.1.0':
     dependencies:

@@ -44,3 +44,6 @@ yarn-error.log*
 
 # idea files
 .idea
+
+# schemind: local API shape baselines, regenerated per dev/env
+.schemind/

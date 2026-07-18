@@ -1,4 +1,5 @@
 import { env } from "@/env";
+import { schemindFetch } from "@/server/schemind";
 
 import { clerkClient } from "@clerk/nextjs/server";
 
@@ -17,17 +18,20 @@ export const userRouter = createTRPCRouter({
       const clerk = await clerkClient();
       const user = await clerk.users.getUser(input.id);
 
-      const response = await fetch(`${env.BACKEND_ENDPOINT_URL}/user/create`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await schemindFetch(
+        `${env.BACKEND_ENDPOINT_URL}/user/create`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: user.id,
+            username: user.username,
+            email: user.emailAddresses[0]?.emailAddress,
+          }),
         },
-        body: JSON.stringify({
-          id: user.id,
-          username: user.username,
-          email: user.emailAddresses[0]?.emailAddress,
-        }),
-      });
+      );
       const data = response.json();
       return data;
     }),

@@ -1,10 +1,11 @@
 import { env } from "@/env";
+import { schemindFetch } from "@/server/schemind";
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const generatorRouter = createTRPCRouter({
   getAllFavNames: protectedProcedure.query(async () => {
-    const response = await fetch(
+    const response = await schemindFetch(
       `${env.BACKEND_ENDPOINT_URL}/prompt/favorites`,
     );
     const data = response.json();
@@ -27,7 +28,7 @@ export const generatorRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input }) => {
-      const response = await fetch(
+      const response = await schemindFetch(
         `${env.BACKEND_ENDPOINT_URL}/prompt/favorites/create`,
         {
           method: "POST",
@@ -54,7 +55,7 @@ export const generatorRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input }) => {
-      const response = await fetch(
+      const response = await schemindFetch(
         `${env.BACKEND_ENDPOINT_URL}/prompt/combos/create`,
         {
           method: "POST",
@@ -79,7 +80,7 @@ export const generatorRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input }) => {
-      const response = await fetch(
+      const response = await schemindFetch(
         `${env.BACKEND_ENDPOINT_URL}/prompt/usernames/create`,
         {
           method: "POST",
